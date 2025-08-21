@@ -5,13 +5,17 @@
 #include "mount.h"
 #include "external.h"
 #include "util.h"
-
+#include "stdlib.h"
 #include "net.h"
 
 int add_external(char *key)
 {
 	struct external *ext;
-
+	if (strstartswith(key, "lazypagesid:")){
+		opts.lazypagesid=atoi(key+12);
+		pr_debug("lazy pages id %d\n",opts.lazypagesid);
+		return 0;
+	}
 	if (strstartswith(key, "mnt[]"))
 		return ext_mount_parse_auto(key + 5);
 

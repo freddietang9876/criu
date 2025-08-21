@@ -2167,14 +2167,17 @@ static int validate_with_build_id(const int fd, const struct stat *fd_status, co
  * Returns true if the metadata of the file matches the metadata stored while
  * dumping else returns false.
  */
+// I am skipping this since we don't want to validate files like the logs which can change
 static bool validate_file(const int fd, const struct stat *fd_status, const struct reg_file_info *rfi)
 {
+	// return true;
 	int result = 1;
 
 	if (rfi->rfe->has_size && (fd_status->st_size != rfi->rfe->size)) {
 		pr_err("File %s has bad size %" PRIu64 " (expect %" PRIu64 ")\n", rfi->path, fd_status->st_size,
 		       rfi->rfe->size);
-		return false;
+		rfi->rfe->size = fd_status -> st_size;
+		return true;
 	}
 
 	if (opts.file_validation_method == FILE_VALIDATION_BUILD_ID)

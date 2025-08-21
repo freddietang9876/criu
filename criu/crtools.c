@@ -280,9 +280,9 @@ int main(int argc, char *argv[], char *envp[])
 		pr_err("Could not initialize kernel features detection.\n");
 		return 1;
 	}
-
+	pr_info("inited kerndat\n");
 	if (check_options())
-		return 1;
+			return 1;
 
 	if (fault_injected(FI_CANNOT_MAP_VDSO))
 		kdat.can_map_vdso = 0;

@@ -2125,7 +2125,7 @@ int cr_dump_tasks(pid_t pid)
 	int ret = -1;
 
 	pr_info("========================================\n");
-	pr_info("Dumping processes (pid: %d comm: %s)\n", pid, __task_comm_info(pid));
+	pr_info("moded Dumping processes (pid: %d comm: %s)\n", pid, __task_comm_info(pid));
 	pr_info("========================================\n");
 
 	/*

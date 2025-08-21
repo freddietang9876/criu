@@ -314,8 +314,8 @@ int setup_uffd(int pid, struct task_restore_args *task_args)
 		pr_perror("Unable to open an userfaultfd descriptor");
 		return -1;
 	}
-
-	if (send_uffd(task_args->uffd, pid) < 0)
+// send the lazypages pid
+	if (send_uffd(task_args->uffd, opts.lazypagesid) < 0)
 		goto err;
 
 	return 0;

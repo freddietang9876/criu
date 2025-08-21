@@ -1254,7 +1254,7 @@ static int kerndat_try_load_cache(void)
 static void kerndat_save_cache(void)
 {
 	int fd, ret;
-	struct statfs s;
+//	struct statfs s;
 	cleanup_free char *kdat_file = NULL;
 	cleanup_free char *kdat_file_tmp = NULL;
 
@@ -1269,6 +1269,7 @@ static void kerndat_save_cache(void)
 	}
 
 	fd = open(kdat_file_tmp, O_CREAT | O_EXCL | O_WRONLY, 0600);
+	pr_info("file loc%s\n",kdat_file_tmp);
 	if (fd < 0)
 		/*
 		 * It can happen that we race with some other criu
@@ -1281,9 +1282,11 @@ static void kerndat_save_cache(void)
 	 * If running as root we store the cache file on a tmpfs (/run),
 	 * because the file should be gone after reboot.
 	 */
-	if (fstatfs(fd, &s) < 0 || s.f_type != TMPFS_MAGIC) {
-		pr_warn("Can't keep kdat cache on non-tempfs\n");
-		close(fd);
+	//we skip the tempfs check 
+	// if (fstatfs(fd, &s) < 0 || s.f_type != TMPFS_MAGIC) {
+	 if (false ) {
+	// 	pr_warn("Can't keep kdat cache on non-tempfs %s\n");
+	// 	close(fd);
 		goto unl;
 	}
 

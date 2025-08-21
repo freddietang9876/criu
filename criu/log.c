@@ -421,7 +421,7 @@ int write_pidfile(int pid)
 		pr_err("pidfile: Can't write pid %d to %s\n", pid, opts.pidfile);
 		goto close;
 	}
-
+	pr_info("pidfile: Wrote pid %d to %s\n",pid,opts.pidfile);
 	pr_debug("pidfile: Wrote pid %d to %s (%d bytes)\n", pid, opts.pidfile, ret);
 	exit_code = 0;
 close:

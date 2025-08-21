@@ -471,6 +471,7 @@ static int setup_opts_from_req(int sk, CriuOpts *req)
 	if (kerndat_init())
 		return 1;
 
+	pr_info("service inited kerndat\n");
 	if (log_keep_err()) {
 		pr_perror("Can't tune log");
 		goto err;
@@ -856,6 +857,7 @@ static int restore_using_req(int sk, CriuOpts *req)
 	if (setup_opts_from_req(sk, req))
 		goto exit;
 
+	pr_debug("lazy found pages id %d\n",opts.lazypagesid);
 	__setproctitle("restore --rpc -D %s", images_dir);
 
 	if (cr_restore_tasks())

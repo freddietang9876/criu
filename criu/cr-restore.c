@@ -1234,9 +1234,31 @@ static inline int fork_with_pid(struct pstree_item *item)
 	}
 
 	if (item == root_item) {
-		item->pid->real = ret;
-		pr_debug("PID: real %d virt %d\n", item->pid->real, vpid(item));
+		
+	// 	char filename[64]; // buffer for filename
+	// 	FILE *fp;
+		int fd;
+		const char *fifo = "pid.fifo";
+	 	item->pid->real = ret;
+
+
+    // // Open for write; this blocks until reader connects
+    fd = open(fifo, O_WRONLY);
+    if (fd == -1) {
+        pr_perror("open\n");
+        return 1;
+    }
+
+    // // Write PID as text with newline (so Go's Scanner sees one line)
+    if (dprintf(fd, "%d\n", ret)<=0){
+		pr_debug("could not write to pipe\n");
+		return 1;
 	}
+
+    close(fd);
+    // return 0;
+			pr_debug("PID: real %d virt %d\n", item->pid->real, vpid(item));
+		}
 
 	arch_shstk_unlock(item, ca.core, pid);
 
@@ -2193,7 +2215,7 @@ skip_ns_bouncing:
 		goto out_kill;
 
 	close_safe(&mnt_ns_fd);
-
+	pr_debug("closed safe\n");
 	if (write_restored_pid())
 		goto out_kill;
 
