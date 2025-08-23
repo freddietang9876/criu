@@ -1235,12 +1235,17 @@ static inline int fork_with_pid(struct pstree_item *item)
 
 	if (item == root_item) {
 		
-	// 	char filename[64]; // buffer for filename
-	// 	FILE *fp;
-		int fd;
-		const char *fifo = "pid.fifo";
+		int fd,needed;
+		char *fifo;
+		const char *suffix = "pid.fifo";
 	 	item->pid->real = ret;
-
+		needed= snprintf(NULL, 0, "%d%s", opts.lazypagesid, suffix) + 1;
+     fifo= malloc(needed);
+    if (!fifo) {
+        pr_perror("malloc failed");
+        return 1;
+    }
+    snprintf(fifo, needed, "%d%s", opts.lazypagesid, suffix);
 
     // // Open for write; this blocks until reader connects
     fd = open(fifo, O_WRONLY);
